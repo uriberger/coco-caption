@@ -1,2 +1,4 @@
 *.pyc
 annotations
+evaluate_script
+*~
