@@ -26,7 +26,7 @@ for pred_file in prediction_files:
     print('>>>>>>>>>>')
     print(pred_file)
     if len(res) == 1:
-        print({x[0]: round(x[1], 3) for x in means.items()})
+        print({x[0]: round(x[1], 3) for x in res[0].items()})
     else:
         means = {x: statistics.mean([y[x] for y in res]) for x in res[0].keys()}
         stdevs = {x: statistics.stdev([y[x] for y in res]) for x in res[0].keys()}
