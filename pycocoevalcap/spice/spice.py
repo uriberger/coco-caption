@@ -77,9 +77,17 @@ class Spice:
 
         imgId_to_scores = {}
         spice_scores = []
+        metrics = ['Relation', 'Caridnality', 'Attribute', 'Size', 'Color', 'Object']
+        all_metric_sum = {x: 0 for x in metrics}
+        all_metric_count = {x: 0 for x in metrics}
         for item in results:
           imgId_to_scores[item['image_id']] = item['scores']
           spice_scores.append(self.float_convert(item['scores']['All']['f']))
+          for metric in metrics:
+            if item['scores'][metric]['f'] is not None:
+              all_metric_sum[metric] += item['scores'][metric]['f']
+              all_metric_count[metric] += 1
+
         average_score = np.mean(np.array(spice_scores))
         scores = []
         for image_id in imgIds:
@@ -88,7 +96,7 @@ class Spice:
           for category,score_tuple in imgId_to_scores[image_id].items():
             score_set[category] = {k: self.float_convert(v) for k, v in score_tuple.items()}
           scores.append(score_set)
-        return average_score, scores
+        return [average_score] + [all_metric_sum[x]/all_metric_count[x] for x in metrics], scores
 
     def method(self):
         return "SPICE"
