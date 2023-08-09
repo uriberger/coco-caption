@@ -5,3 +5,4 @@ evaluate_script
 pycocoevalcap/spice/tmp
 pycocoevalcap/spice/cache
 pycocoevalcap/spice/lib
+slurm-*.out
