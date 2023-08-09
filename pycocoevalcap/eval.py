@@ -41,7 +41,7 @@ class COCOEvalCap:
             #(Meteor(),"METEOR"),
             (Rouge(), "ROUGE_L"),
             (Cider(), "CIDEr"),
-            (Spice(), ["SPICE", 'relation', 'caridnality', 'attribute', 'size', 'color', 'object'])
+            (Spice(), ["SPICE", 'relation', 'cardinality', 'attribute', 'size', 'color', 'object'])
         ]
 
         # =================================================

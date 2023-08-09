@@ -77,7 +77,7 @@ class Spice:
 
         imgId_to_scores = {}
         spice_scores = []
-        metrics = ['Relation', 'Caridnality', 'Attribute', 'Size', 'Color', 'Object']
+        metrics = ['Relation', 'Cardinality', 'Attribute', 'Size', 'Color', 'Object']
         all_metric_sum = {x: 0 for x in metrics}
         all_metric_count = {x: 0 for x in metrics}
         for item in results:
