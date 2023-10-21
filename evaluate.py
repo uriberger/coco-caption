@@ -18,6 +18,9 @@ xm3600_tmp_dir = 'xm3600_tmp_dir'
 def adjust_xm3600_image_ids(file_path):
     if not os.path.isdir(xm3600_tmp_dir):
         os.mkdir(xm3600_tmp_dir)
+        cur_ind = 0
+    else:
+        cur_ind = max([int(x.split('.json')[0]) for x in os.listdir(xm3600_tmp_dir)]) + 1
     with open('annotations/xm3600_image_ids.json', 'r') as fp:
         image_ids = json.load(fp)
     with open(file_path, 'r') as fp:
@@ -25,7 +28,7 @@ def adjust_xm3600_image_ids(file_path):
     orig_to_new_image_id = {image_ids[i]: i for i in range(len(image_ids))}
     for i in range(len(data)):
         data[i]['image_id'] = orig_to_new_image_id[data[i]['image_id']]
-    new_file_path = os.path.join(xm3600_tmp_dir, file_path)
+    new_file_path = os.path.join(xm3600_tmp_dir, f'{cur_ind}.json')
     with open(new_file_path, 'w') as fp:
         fp.write(json.dumps(data))
     return new_file_path
@@ -42,9 +45,9 @@ for pred_file in prediction_files:
     res = []
     for file_path in file_paths:
         coco = COCO(reference_file)
-        cocoRes = coco.loadRes(file_path)
         if xm3600_mode:
             file_path = adjust_xm3600_image_ids(file_path)
+        cocoRes = coco.loadRes(file_path)
         cocoEval = COCOEvalCap(coco, cocoRes)
         res.append(cocoEval.evaluate())
     print('>>>>>>>>>>')
