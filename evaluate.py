@@ -4,14 +4,16 @@ import sys
 import os
 import json
 import statistics
+import shutil
 
-assert len(sys.argv) > 2, 'Please provide at least 2 files: reference and predictions file'
-reference_file = sys.argv[1]
+assert len(sys.argv) > 3, 'Please provide at least 2 files: reference and predictions file'
+lang = sys.argv[1]
+reference_file = sys.argv[2]
 xm3600_mode = False
 if 'crossmodal' in reference_file or 'cross_modal' in reference_file or 'xm3600' in reference_file:
     print('***NOTE: Using XM3600 mode')
     xm3600_mode = True
-prediction_files = sys.argv[2:]
+prediction_files = sys.argv[3:]
 
 xm3600_tmp_dir = 'xm3600_tmp_dir'
 
@@ -49,7 +51,7 @@ for pred_file in prediction_files:
             file_path = adjust_xm3600_image_ids(file_path)
         cocoRes = coco.loadRes(file_path)
         cocoEval = COCOEvalCap(coco, cocoRes)
-        res.append(cocoEval.evaluate())
+        res.append(cocoEval.evaluate(lang))
     print('>>>>>>>>>>')
     print(pred_file)
     if len(res) == 1:
@@ -60,5 +62,5 @@ for pred_file in prediction_files:
         print({x[0]: f'{round(x[1], 3)} +- {round(stdevs[x[0]], 3)}' for x in means.items()})
     print('<<<<<<<<<<')
 if xm3600_mode:
-    os.rmdir(xm3600_tmp_dir)
+    shutil.rmtree(xm3600_tmp_dir)
 print('Finished')

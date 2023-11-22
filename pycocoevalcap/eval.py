@@ -15,7 +15,7 @@ class COCOEvalCap:
         self.cocoRes = cocoRes
         self.params = {'image_id': coco.getImgIds()}
 
-    def evaluate(self):
+    def evaluate(self, lang):
         imgIds = self.params['image_id']
         # imgIds = self.coco.getImgIds()
         gts = {}
@@ -40,9 +40,10 @@ class COCOEvalCap:
             (Bleu(4), ["Bleu_1", "Bleu_2", "Bleu_3", "Bleu_4"]),
             #(Meteor(),"METEOR"),
             (Rouge(), "ROUGE_L"),
-            (Cider(), "CIDEr"),
-            (Spice(), ["SPICE", 'relation', 'cardinality', 'attribute', 'size', 'color', 'object'])
+            (Cider(), "CIDEr")
         ]
+        if lang == 'en':
+            scorers.append((Spice(), ["SPICE", 'relation', 'cardinality', 'attribute', 'size', 'color', 'object']))
 
         # =================================================
         # Compute scores
