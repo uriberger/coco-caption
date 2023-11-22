@@ -10,12 +10,13 @@ assert len(sys.argv) > 3, 'Please provide at least 2 files: reference and predic
 lang = sys.argv[1]
 reference_file = sys.argv[2]
 xm3600_mode = False
+xm3600_tmp_dir = 'xm3600_tmp_dir'
 if 'crossmodal' in reference_file or 'cross_modal' in reference_file or 'xm3600' in reference_file:
     print('***NOTE: Using XM3600 mode')
     xm3600_mode = True
+    if os.path.isdir(xm3600_tmp_dir):
+        shutil.rmtree(xm3600_tmp_dir)
 prediction_files = sys.argv[3:]
-
-xm3600_tmp_dir = 'xm3600_tmp_dir'
 
 def adjust_xm3600_image_ids(file_path):
     if not os.path.isdir(xm3600_tmp_dir):
